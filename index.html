@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VoteFlow — AI phone agents for modern campaigns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAFAF7;
+  --surface:#FFFFFF;
+  --ink:#0F1115;
+  --ink-2:#3A3F47;
+  --muted:#7A7F87;
+  --faint:#B4B7BC;
+  --line:#ECECE7;
+  --line-2:#E4E3DD;
+  --red:#B91C1C;
+  --red-soft:#FEF2F2;
+  --blue:#1E3A5F;
+  --blue-soft:#EEF2F7;
+  --green:#166534;
+  --green-soft:#F0FDF4;
+  --gold:#C8970A;
+
+  --f-serif:'Instrument Serif', Georgia, serif;
+  --f-sans:'Inter', system-ui, -apple-system, sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, monospace;
+
+  --r-sm:6px;
+  --r-md:10px;
+  --r-lg:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--f-sans);
+  color:var(--ink);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  font-size:15px;
+  line-height:1.5;
+  letter-spacing:-0.005em;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit;padding:0}
+img,svg{display:block}
+
+.container{max-width:1240px;margin:0 auto;padding:0 32px}
+@media(max-width:720px){.container{padding:0 20px}}
+
+/* ——— typography primitives ——— */
+.kicker{
+  font-family:var(--f-mono);font-size:11px;font-weight:500;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);
+}
+.kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;margin-right:8px;vertical-align:1px}
+h1,h2,h3,h4{margin:0;font-weight:500;letter-spacing:-0.02em}
+h1{font-family:var(--f-serif);font-weight:400;letter-spacing:-0.02em;line-height:1.02}
+h2{font-family:var(--f-serif);font-weight:400;letter-spacing:-0.02em;line-height:1.05}
+h3{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+p{margin:0}
+
+/* ——— buttons ——— */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--f-sans);font-weight:500;font-size:14px;
+  padding:10px 16px;border-radius:var(--r-md);white-space:nowrap;
+  transition:background .15s, color .15s, transform .1s, border-color .15s;
+  letter-spacing:-0.005em;
+}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:#000}
+.btn-ghost{color:var(--ink);border:1px solid var(--line-2);background:var(--surface)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#991616}
+.btn .arrow{transition:transform .2s}
+.btn:hover .arrow{transform:translateX(2px)}
+.btn-sm{padding:7px 12px;font-size:13px;border-radius:8px}
+
+/* ——— nav ——— */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,250,247,0.82);
+  backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-0.015em}
+.brand svg{width:22px;height:22px}
+.brand em{font-style:normal;color:var(--muted);font-weight:500}
+.nav-links{display:flex;align-items:center;gap:28px;white-space:nowrap}
+.nav-links a{font-size:14px;color:var(--ink-2);font-weight:500}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:10px;white-space:nowrap}
+@media(max-width:960px){.nav-links{display:none}}
+
+/* ——— status pill ——— */
+.status{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--f-mono);font-size:11px;font-weight:500;
+  color:var(--ink-2);
+  padding:5px 10px;border:1px solid var(--line-2);border-radius:999px;
+  background:var(--surface);
+}
+.status .pulse{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 0 rgba(22,101,52,.5);animation:pulse 1.8s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(22,101,52,.45)}
+  70%{box-shadow:0 0 0 7px rgba(22,101,52,0)}
+  100%{box-shadow:0 0 0 0 rgba(22,101,52,0)}
+}
+
+/* ——— hero ——— */
+.hero{padding:72px 0 64px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:1040px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+.hero-copy .kicker{margin-bottom:18px;display:inline-block}
+.hero-copy h1{
+  font-size:clamp(42px, 5.2vw, 72px);
+  margin-bottom:20px;
+}
+.hero-copy h1 em{font-style:italic;color:var(--ink-2)}
+.hero-copy .lede{
+  font-size:17px;color:var(--ink-2);max-width:480px;line-height:1.55;
+}
+.hero-actions{display:flex;align-items:center;gap:10px;margin-top:28px;flex-wrap:wrap}
+.hero-meta{
+  display:flex;align-items:center;gap:20px;margin-top:32px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted);
+}
+.hero-meta .item{display:flex;align-items:center;gap:7px}
+.hero-meta svg{color:var(--green)}
+
+/* ——— product card (live ops) ——— */
+.card{
+  background:var(--surface);
+  border:1px solid var(--line-2);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  box-shadow:0 1px 2px rgba(15,17,21,0.03), 0 24px 48px -24px rgba(15,17,21,0.12);
+}
+.card-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg);
+}
+.card-toolbar .tabs{display:flex;gap:2px;background:var(--surface);padding:2px;border:1px solid var(--line);border-radius:8px}
+.tab{
+  font-family:var(--f-sans);font-size:12px;font-weight:500;color:var(--muted);
+  padding:5px 10px;border-radius:6px;cursor:pointer;
+}
+.tab.active{background:var(--ink);color:#fff}
+.tab:not(.active):hover{color:var(--ink)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-right .bits{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+
+.ops-kpis{display:grid;grid-template-columns:repeat(4,1fr)}
+.kpi{padding:18px 16px;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi .lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi .n{font-family:var(--f-serif);font-size:30px;line-height:1;letter-spacing:-0.02em;color:var(--ink);font-feature-settings:"lnum","tnum"}
+.kpi .n .u{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:4px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.kpi .d{margin-top:4px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:4px}
+.kpi .d.neutral{color:var(--muted)}
+
+.ops-body{display:grid;grid-template-columns:1.1fr 1fr;border-top:1px solid var(--line)}
+@media(max-width:720px){.ops-body{grid-template-columns:1fr}}
+
+/* feed */
+.feed-panel{padding:14px 16px;border-right:1px solid var(--line)}
+@media(max-width:720px){.feed-panel{border-right:0;border-bottom:1px solid var(--line)}}
+.panel-h{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
+}
+.panel-h h4{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.panel-h .more{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.feed{display:flex;flex-direction:column;gap:1px}
+.feed-row{
+  display:grid;grid-template-columns:60px 22px 50px 1fr auto;gap:10px;align-items:center;
+  padding:8px 6px;border-bottom:1px dotted var(--line);font-size:13px;
+}
+.feed-row:last-child{border-bottom:0}
+.feed-row .t{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.feed-row .dist{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);font-weight:600}
+.feed-row .type{font-size:12px;color:var(--ink-2)}
+.feed-row .txt{color:var(--ink-2)}
+.feed-row .status-chip{
+  font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.05em;
+  padding:3px 7px;border-radius:999px;text-transform:uppercase;
+}
+.chip-green{background:var(--green-soft);color:var(--green)}
+.chip-red{background:var(--red-soft);color:var(--red)}
+.chip-blue{background:var(--blue-soft);color:var(--blue)}
+.chip-muted{background:var(--bg);color:var(--muted)}
+
+/* transcript */
+.call-panel{padding:14px 16px;display:flex;flex-direction:column;min-height:280px}
+.call-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.avatar{
+  width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;
+  display:grid;place-items:center;font-weight:600;font-size:12px;font-family:var(--f-sans);
+}
+.call-who .n{font-size:13px;font-weight:600}
+.call-who .m{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
+.call-timer{margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.transcript{
+  flex:1;border-top:1px solid var(--line);padding-top:10px;
+  font-size:13.5px;line-height:1.55;color:var(--ink-2);min-height:160px;
+}
+.transcript .msg{margin:0 0 10px;padding-left:38px;position:relative}
+.transcript .msg .who{
+  position:absolute;left:0;top:0;
+  font-family:var(--f-mono);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 5px;border-radius:4px;background:var(--bg);color:var(--muted);
+}
+.transcript .msg.ai .who{background:#0F1115;color:#fff}
+.transcript .msg.v .who{background:var(--blue-soft);color:var(--blue)}
+.cursor{display:inline-block;width:6px;height:1em;background:var(--ink-2);vertical-align:-2px;margin-left:1px;animation:blink 1s steps(2,end) infinite}
+@keyframes blink{50%{opacity:0}}
+.call-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-top:10px;border-top:1px solid var(--line);margin-top:8px;
+  font-family:var(--f-mono);font-size:11px;color:var(--muted);
+}
+.waves{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+.waves span{width:2px;background:var(--red);border-radius:1px;animation:wave 1.1s ease-in-out infinite}
+.waves span:nth-child(1){height:4px;animation-delay:0s}
+.waves span:nth-child(2){height:9px;animation-delay:.1s}
+.waves span:nth-child(3){height:6px;animation-delay:.2s}
+.waves span:nth-child(4){height:11px;animation-delay:.3s}
+.waves span:nth-child(5){height:7px;animation-delay:.4s}
+@keyframes wave{0%,100%{transform:scaleY(.6)}50%{transform:scaleY(1.3)}}
+
+/* ——— section base ——— */
+section{padding:88px 0;border-bottom:1px solid var(--line)}
+.sec-head{margin-bottom:40px;max-width:720px}
+.sec-head h2{font-size:clamp(32px,3.6vw,48px);margin:10px 0 0}
+.sec-head h2 em{font-style:italic;color:var(--ink-2)}
+.sec-head .kicker{margin-bottom:0}
+.sec-head .desc{margin-top:14px;color:var(--muted);font-size:16px;max-width:580px}
+
+/* ——— logos ——— */
+.logos{padding:32px 0;border-bottom:1px solid var(--line);background:var(--surface)}
+.logos-inner{
+  display:flex;align-items:center;gap:40px;justify-content:center;flex-wrap:wrap;
+}
+.logos .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.logo-word{font-family:var(--f-serif);font-size:22px;color:var(--ink-2);letter-spacing:-0.01em;opacity:.75}
+.logo-word.i{font-style:italic}
+
+/* ——— problem (clean tiles) ——— */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.tiles{grid-template-columns:1fr}}
+.tile{
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  padding:22px;transition:border-color .15s, transform .15s;
+}
+.tile:hover{border-color:var(--ink-2);transform:translateY(-2px)}
+.tile .n{
+  font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:16px;
+}
+.tile h3{font-size:17px;margin-bottom:6px}
+.tile p{color:var(--muted);font-size:14.5px;line-height:1.55}
+.tile .stat{
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;flex-direction:column;gap:4px;
+}
+.tile .stat .v{font-family:var(--f-serif);font-size:28px;color:var(--red);line-height:1;letter-spacing:-0.02em}
+.tile .stat .l{font-size:12px;color:var(--muted)}
+
+/* ——— solution (features) ——— */
+.feat-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+  border:1px solid var(--line-2);border-radius:var(--r-lg);overflow:hidden;background:var(--surface);
+}
+@media(max-width:900px){.feat-grid{grid-template-columns:1fr}}
+.feat{
+  padding:28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:flex;flex-direction:column;gap:12px;
+}
+.feat:nth-child(2n){border-right:0}
+.feat:nth-last-child(-n+2){border-bottom:0}
+@media(max-width:900px){
+  .feat{border-right:0}
+  .feat:nth-child(2n){border-right:0}
+  .feat:nth-last-child(2){border-bottom:1px solid var(--line)}
+}
+.feat .icon{
+  width:32px;height:32px;border-radius:8px;background:var(--bg);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--ink);
+}
+.feat h3{font-size:17px}
+.feat p{color:var(--muted);font-size:14.5px;line-height:1.55}
+.feat .mini{
+  margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--f-mono);font-size:10px;font-weight:500;
+  padding:3px 7px;border-radius:999px;background:var(--bg);color:var(--ink-2);border:1px solid var(--line);
+  letter-spacing:.03em;
+}
+
+/* ——— metrics bar ——— */
+.metrics{background:var(--ink);color:#fff;border-bottom:0}
+.metrics .kicker{color:rgba(255,255,255,0.55)}
+.metrics .sec-head h2{color:#fff}
+.metrics .sec-head h2 em{color:rgba(255,255,255,0.6)}
+.metrics .desc{color:rgba(255,255,255,0.6)}
+.m-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-lg);overflow:hidden;
+  background:rgba(255,255,255,0.02);
+}
+@media(max-width:900px){.m-row{grid-template-columns:repeat(2,1fr)}}
+.m-cell{padding:26px 22px;border-right:1px solid rgba(255,255,255,0.1)}
+.m-cell:nth-child(4n){border-right:0}
+@media(max-width:900px){
+  .m-cell{border-bottom:1px solid rgba(255,255,255,0.1)}
+  .m-cell:nth-child(2n){border-right:0}
+  .m-cell:nth-last-child(-n+2){border-bottom:0}
+}
+.m-cell .lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:12px}
+.m-cell .big{font-family:var(--f-serif);font-size:52px;line-height:1;letter-spacing:-0.02em}
+.m-cell .big .u{font-family:var(--f-mono);font-size:14px;color:rgba(255,255,255,0.6);margin-left:4px;font-weight:500}
+.m-cell .sub{margin-top:8px;font-size:13px;color:rgba(255,255,255,0.55)}
+
+/* ——— use cases (table-ish clean list) ——— */
+.use-table{
+  border:1px solid var(--line-2);border-radius:var(--r-lg);overflow:hidden;background:var(--surface);
+}
+.use-row{
+  display:grid;grid-template-columns:40px 160px 1fr 120px 80px;gap:20px;align-items:center;
+  padding:20px 22px;border-bottom:1px solid var(--line);
+  cursor:pointer;transition:background .15s;
+}
+.use-row:last-child{border-bottom:0}
+.use-row:hover{background:var(--bg)}
+@media(max-width:900px){
+  .use-row{grid-template-columns:40px 1fr 80px;gap:14px;padding:18px}
+  .use-row .desc, .use-row .lift-cell{grid-column:2 / -1;grid-row:auto}
+  .use-row .lift-cell{text-align:left}
+}
+.use-row .idx{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.use-row .name{font-size:15px;font-weight:600;color:var(--ink)}
+.use-row .name .t{display:block;font-family:var(--f-mono);font-size:10px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.use-row .desc{color:var(--muted);font-size:13.5px;line-height:1.55}
+.use-row .lift-cell{font-family:var(--f-serif);font-size:22px;letter-spacing:-0.02em;color:var(--red);line-height:1;text-align:right}
+.use-row .lift-cell .u{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:3px}
+.use-row .lift-cell .lc{display:block;font-family:var(--f-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;font-weight:500}
+.use-row .chev{color:var(--faint);justify-self:end;transition:transform .15s, color .15s}
+.use-row:hover .chev{color:var(--ink);transform:translateX(3px)}
+
+/* ——— testimonial ——— */
+.testify{
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  padding:40px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;
+}
+@media(max-width:900px){.testify{grid-template-columns:1fr;padding:28px;gap:28px}}
+.q{font-family:var(--f-serif);font-size:clamp(22px,2.4vw,30px);line-height:1.25;color:var(--ink);margin:0}
+.q em{font-style:italic;color:var(--ink-2)}
+.q::before{content:"\201C";color:var(--red);font-size:1.6em;line-height:0;margin-right:2px;vertical-align:-0.35em}
+.who-cite{margin-top:18px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.who-cite .a{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:600}
+.who-cite strong{color:var(--ink);font-weight:600}
+
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line)}
+.mini-stats .c{padding:18px;background:var(--surface)}
+.mini-stats .c .n{font-family:var(--f-serif);font-size:34px;line-height:1;letter-spacing:-0.02em}
+.mini-stats .c .n .u{font-family:var(--f-mono);font-size:13px;color:var(--muted);margin-left:3px;font-weight:500}
+.mini-stats .c .l{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* ——— compliance ——— */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.comp-grid{grid-template-columns:1fr}}
+.comp-card{
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  padding:24px;
+}
+.comp-card .icon{
+  width:30px;height:30px;border-radius:8px;background:var(--bg);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--ink);margin-bottom:16px;
+}
+.comp-card h3{font-size:16px;margin-bottom:6px}
+.comp-card p{color:var(--muted);font-size:14px;line-height:1.55;margin-bottom:16px}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ——— cta ——— */
+.cta-wrap{
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
+}
+@media(max-width:900px){.cta-wrap{grid-template-columns:1fr;padding:28px;gap:32px}}
+.cta-copy h2{font-size:clamp(28px,3vw,40px);margin-bottom:14px}
+.cta-copy .desc{color:var(--muted);font-size:15.5px;max-width:440px;margin-bottom:22px}
+.check-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.check-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-2)}
+.check-list li svg{color:var(--green);flex:none;margin-top:2px}
+
+.form{display:flex;flex-direction:column;gap:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-row.one{grid-template-columns:1fr}
+.field label{display:block;font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.field input, .field select{
+  width:100%;font-family:var(--f-sans);font-size:14px;color:var(--ink);
+  padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);
+  transition:border .15s, box-shadow .15s;
+}
+.field input:focus, .field select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(15,17,21,0.06)}
+.form-foot{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* ——— footer ——— */
+footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--line);border-bottom:0}
+.foot-top{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding-bottom:32px;border-bottom:1px solid var(--line)}
+@media(max-width:720px){.foot-top{grid-template-columns:1fr 1fr}}
+.foot-top .tag{margin-top:12px;font-size:13.5px;color:var(--muted);max-width:280px}
+.foot-top h5{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+.foot-top ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.foot-top li{font-size:14px;color:var(--ink-2)}
+.foot-top li a:hover{color:var(--ink)}
+.foot-bottom{
+  margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.04em;
+}
+
+/* small helpers */
+.mono{font-family:var(--f-mono)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 40 40"><path d="M5 9 L20 20 L5 31 Z" fill="#1E3A5F"/><path d="M20 9 L35 20 L20 31 Z" fill="#B91C1C"/></svg>
+      <span>VoteFlow<em> / beta</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#platform">Platform</a>
+      <a href="#cases">Use cases</a>
+      <a href="#metrics">Metrics</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-sm btn-ghost">Sign in</a>
+      <a href="#demo" class="btn btn-sm btn-primary">Book a demo <span class="arrow">→</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top" style="border-top:0">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="kicker"><span class="dot"></span>AI voice agents for campaigns</span>
+        <h1>Every voter, on the phone, <em>tonight.</em></h1>
+        <p class="lede">VoteFlow deploys thousands of human-sounding AI phone agents that hold real, branching conversations with voters — at the speed and scale campaigns actually need.</p>
+        <div class="hero-actions">
+          <a href="#demo" class="btn btn-primary">Book a demo <span class="arrow">→</span></a>
+          <a href="#platform" class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Hear a live call
+          </a>
+        </div>
+        <div class="hero-meta">
+          <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>FEC &amp; TCPA ready</span>
+          <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SOC 2 Type II</span>
+          <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Syncs to VAN &amp; NGP</span>
+        </div>
+      </div>
+
+      <!-- product card -->
+      <div class="card">
+        <div class="card-toolbar">
+          <div class="tabs">
+            <div class="tab active">Live ops</div>
+            <div class="tab">Campaigns</div>
+            <div class="tab">Reports</div>
+          </div>
+          <div class="tb-right">
+            <span class="status"><span class="pulse"></span>On air · 4 campaigns</span>
+          </div>
+        </div>
+
+        <div class="ops-kpis">
+          <div class="kpi">
+            <div class="lbl">Calls / min</div>
+            <div class="n" id="k-calls">3,284</div>
+            <div class="d">↑ 4.2% · 1h</div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Avg. length</div>
+            <div class="n">2:47</div>
+            <div class="d neutral">— steady</div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Voter ID acc.</div>
+            <div class="n">94.3<span class="u">%</span></div>
+            <div class="d">↑ 0.4 · 24h</div>
+          </div>
+          <div class="kpi">
+            <div class="lbl">Languages</div>
+            <div class="n">11</div>
+            <div class="d neutral">live today</div>
+          </div>
+        </div>
+
+        <div class="ops-body">
+          <div class="feed-panel">
+            <div class="panel-h">
+              <h4>Dispatch log</h4>
+              <span class="more">last 90s</span>
+            </div>
+            <div class="feed" id="feed"></div>
+          </div>
+
+          <div class="call-panel">
+            <div class="call-head">
+              <div class="avatar">MH</div>
+              <div class="call-who">
+                <div class="n">Margaret H.</div>
+                <div class="m">PA-07 · Soft-R · Healthcare</div>
+              </div>
+              <div class="call-timer" id="timer">03:12</div>
+            </div>
+            <div class="transcript" id="transcript"></div>
+            <div class="call-foot">
+              <span class="waves"><span></span><span></span><span></span><span></span><span></span></span>
+              <span>VoteFlow agent · v4.2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<section class="logos" style="padding:28px 0">
+  <div class="container logos-inner">
+    <span class="lbl">Trusted by 184+ campaigns and committees</span>
+    <span class="logo-word">NORTHBOUND</span>
+    <span class="logo-word i">Sawgrass Strategies</span>
+    <span class="logo-word">CIVIC / SIGNAL</span>
+    <span class="logo-word i">Bellwether</span>
+    <span class="logo-word">PRECINCT 21</span>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">The problem</span>
+      <h2>The old phone bank is <em>broken.</em></h2>
+      <p class="desc">Pickup rates are collapsing. Volunteers are scarce. And the window to move voters keeps getting shorter.</p>
+    </div>
+    <div class="tiles">
+      <div class="tile">
+        <div class="n">01 · Volunteers</div>
+        <h3>Structural shortage.</h3>
+        <p>Field programs need 4–6× the human capacity they can actually recruit. Canvassers burn out long before Election Day.</p>
+        <div class="stat"><span class="v">−52%</span><span class="l">volunteer sign-ups vs. 2016</span></div>
+      </div>
+      <div class="tile">
+        <div class="n">02 · Pickup rates</div>
+        <h3>Voters stopped answering.</h3>
+        <p>Traditional campaign calls are ignored. Robo-calls get hung up on in seconds. The phone only works if it sounds human.</p>
+        <div class="stat"><span class="v">3.8%</span><span class="l">avg. pickup on legacy dialers</span></div>
+      </div>
+      <div class="tile">
+        <div class="n">03 · The window</div>
+        <h3>18 days to decide.</h3>
+        <p>Most persuadable voters decide in the final three weeks. Campaigns that can't hold 100k+ conversations in that window lose.</p>
+        <div class="stat"><span class="v">18d</span><span class="l">median decision window, swing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM / SOLUTION -->
+<section id="platform" style="background:var(--surface)">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">The platform</span>
+      <h2>An AI phone bank <em>built like software.</em></h2>
+      <p class="desc">One system to launch, run, and measure voter outreach — from persuasion and GOTV to rapid response.</p>
+    </div>
+
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+        <h3>Sounds human.</h3>
+        <p>Low-latency speech with natural pauses, back-channels, and regional accents. 87% of voters can't tell they're talking to AI.</p>
+        <div class="mini"><span class="pill">&lt; 400ms latency</span><span class="pill">24 regional accents</span></div>
+      </div>
+      <div class="feat">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Speaks fluent voter.</h3>
+        <p>Ingests your platform, oppo, and district data. Handles objections. Pivots across issues without losing the thread.</p>
+        <div class="mini"><span class="pill">Platform-grounded</span><span class="pill">11 languages</span></div>
+      </div>
+      <div class="feat">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <h3>Scales to tonight.</h3>
+        <p>From 500 to 500,000 calls in the same evening. Ramp up 72 hours before polls close — no shifts, no no-shows.</p>
+        <div class="mini"><span class="pill">500k calls / night</span><span class="pill">Elastic capacity</span></div>
+      </div>
+      <div class="feat">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+        <h3>Reports that move staff.</h3>
+        <p>Every call tagged: support score, top issue, turnout likelihood, exact quote. Synced to VAN, NGP, or your warehouse by morning.</p>
+        <div class="mini"><span class="pill">VAN · NGP · Snowflake</span><span class="pill">1–5 support score</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics" id="metrics">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">The record</span>
+      <h2>Two cycles. <em>47 million conversations.</em></h2>
+      <p class="desc">Aggregate performance across VoteFlow deployments in the 2024 and 2025 cycles.</p>
+    </div>
+    <div class="m-row">
+      <div class="m-cell">
+        <div class="lbl">Voter conversations</div>
+        <div class="big">47.2<span class="u">M</span></div>
+        <div class="sub">Across 184 campaigns</div>
+      </div>
+      <div class="m-cell">
+        <div class="lbl">Contact rate</div>
+        <div class="big">38<span class="u">%</span></div>
+        <div class="sub">vs. 4% for legacy dialers</div>
+      </div>
+      <div class="m-cell">
+        <div class="lbl">Cost / contact</div>
+        <div class="big">$0.41</div>
+        <div class="sub">vs. $14.80 for canvassers</div>
+      </div>
+      <div class="m-cell">
+        <div class="lbl">Voter ID accuracy</div>
+        <div class="big">94<span class="u">%</span></div>
+        <div class="sub">Field-validated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="cases">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">Use cases</span>
+      <h2>One platform, <em>every stage of the cycle.</em></h2>
+    </div>
+    <div class="use-table">
+      <div class="use-row">
+        <div class="idx">01</div>
+        <div class="name">Persuasion<span class="t">Soft voters</span></div>
+        <div class="desc">Issue-specific, branching conversations for the 6–12% of voters still persuadable. Logs exactly what moved them.</div>
+        <div class="lift-cell">+4.8<span class="u">pt</span><span class="lc">lift vs. control</span></div>
+        <div class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="use-row">
+        <div class="idx">02</div>
+        <div class="name">GOTV<span class="t">Get out the vote</span></div>
+        <div class="desc">72 hours before polls close, reach every low-propensity supporter with a named call. Offer rides. Confirm polling places.</div>
+        <div class="lift-cell">+7.2<span class="u">pt</span><span class="lc">turnout, mid-prop</span></div>
+        <div class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="use-row">
+        <div class="idx">03</div>
+        <div class="name">Voter ID<span class="t">Support scoring</span></div>
+        <div class="desc">Score every voter 1–5 in a single conversation. Capture top issues verbatim. Flag persuadables, firm supporters, and opps.</div>
+        <div class="lift-cell">94<span class="u">%</span><span class="lc">vs. ground truth</span></div>
+        <div class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="use-row">
+        <div class="idx">04</div>
+        <div class="name">Fundraising<span class="t">Donor calls</span></div>
+        <div class="desc">Thank donors by name. Re-ask lapsed donors on the issue they cared about. Warm-transfer high-capacity leads to a human.</div>
+        <div class="lift-cell">3.1<span class="u">×</span><span class="lc">ROI vs. direct mail</span></div>
+        <div class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="use-row">
+        <div class="idx">05</div>
+        <div class="name">Event turnout<span class="t">RSVPs</span></div>
+        <div class="desc">Personalized town-hall and rally invites at scale. RSVP, add-to-calendar, and day-of reminder — all in one call.</div>
+        <div class="lift-cell">5.4<span class="u">×</span><span class="lc">RSVP vs. email</span></div>
+        <div class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="use-row">
+        <div class="idx">06</div>
+        <div class="name">Rapid response<span class="t">Breaking news</span></div>
+        <div class="desc">Push a new script to 50k voters by 7pm the same evening. Correct the record, carry the message, report sentiment by morning.</div>
+        <div class="lift-cell">&lt; 3<span class="u">hr</span><span class="lc">script to statewide</span></div>
+        <div class="chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section id="proof" style="background:var(--surface)">
+  <div class="container">
+    <div class="testify">
+      <div>
+        <p class="q">We found <em>11,000 persuadable voters</em> in the last ten days our canvass had never reached. VoteFlow talked to all of them. We won by 4,200.</p>
+        <div class="who-cite">
+          <span class="a">JR</span>
+          <span><strong>J. Reeves</strong> · Campaign Manager, competitive U.S. House race · 2024</span>
+        </div>
+      </div>
+      <div class="mini-stats">
+        <div class="c"><div class="n">184</div><div class="l">Campaigns run</div></div>
+        <div class="c"><div class="n">67<span class="u">%</span></div><div class="l">Win primary metric</div></div>
+        <div class="c"><div class="n">0</div><div class="l">TCPA violations, all time</div></div>
+        <div class="c"><div class="n">11</div><div class="l">Languages deployed</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section id="compliance">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">Compliance</span>
+      <h2>Built with <em>general counsel</em> in the room.</h2>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z"/></svg></div>
+        <h3>Regulatory</h3>
+        <p>FEC-compliant disclosures on every call. TCPA-safe routing. DNC scrubbed hourly. State-by-state rule engine.</p>
+        <div class="badges"><span class="pill">FEC</span><span class="pill">TCPA</span><span class="pill">DNC / hr</span><span class="pill">50-state rules</span></div>
+      </div>
+      <div class="comp-card">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Security</h3>
+        <p>AES-256 at rest. SOC 2 Type II audited. Single-tenant option by state. Your universe never crosses another campaign's tenant.</p>
+        <div class="badges"><span class="pill">SOC 2 II</span><span class="pill">AES-256</span><span class="pill">SSO + SCIM</span><span class="pill">Single-tenant</span></div>
+      </div>
+      <div class="comp-card">
+        <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg></div>
+        <h3>Transparency</h3>
+        <p>Every call recorded and auditable. AI identity disclosed up front. Full provenance on every conversation, pullable on demand.</p>
+        <div class="badges"><span class="pill">Audit log</span><span class="pill">AI disclosure</span><span class="pill">State AG playbook</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="demo" style="background:var(--surface)">
+  <div class="container">
+    <div class="cta-wrap">
+      <div class="cta-copy">
+        <span class="kicker">Book a demo</span>
+        <h2>Let's run one evening on <em>your race.</em></h2>
+        <p class="desc">Tell us the district, universe size, and window. In 48 hours we'll build a working voice agent trained on your platform — and walk you through the projected numbers before you commit a dollar.</p>
+        <ul class="check-list">
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Working voice agent in your candidate's voice</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Projected contact, persuasion &amp; turnout lift</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compliance review with your general counsel</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pricing locked for the full cycle</li>
+        </ul>
+      </div>
+      <form class="form" onsubmit="event.preventDefault(); const b=this.querySelector('button[type=submit]'); b.innerText='Requested ✓'; b.disabled=true;">
+        <div class="form-row">
+          <div class="field"><label for="name">Full name</label><input id="name" required placeholder="Jane Doe"/></div>
+          <div class="field"><label for="role">Role</label>
+            <select id="role" required>
+              <option value="">Select…</option>
+              <option>Campaign Manager</option>
+              <option>Field Director</option>
+              <option>Consultant / Agency</option>
+              <option>Party Committee</option>
+              <option>Independent Expenditure</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="email">Work email</label><input id="email" type="email" required placeholder="jane@campaign.com"/></div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" placeholder="(215) 555-0101"/></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="race">Race / committee</label><input id="race" placeholder="PA-07 · U.S. House"/></div>
+          <div class="field"><label for="universe">Universe size</label>
+            <select id="universe">
+              <option value="">Select…</option>
+              <option>Under 50k</option>
+              <option>50k – 250k</option>
+              <option>250k – 1M</option>
+              <option>Over 1M</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row one">
+          <div class="field"><label for="when">Live by</label>
+            <select id="when">
+              <option value="">Select…</option>
+              <option>Within 30 days</option>
+              <option>This quarter</option>
+              <option>Pre-primary</option>
+              <option>General window</option>
+              <option>Exploring for '28</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary">Request demo <span class="arrow">→</span></button>
+          <a href="#platform" class="btn btn-ghost">Or hear a sample call</a>
+        </div>
+        <div class="form-foot">Briefings are 1:1 with our partner team. 24h response.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <div>
+        <a class="brand" href="#top">
+          <svg viewBox="0 0 40 40" style="width:22px;height:22px"><path d="M5 9 L20 20 L5 31 Z" fill="#1E3A5F"/><path d="M20 9 L35 20 L20 31 Z" fill="#B91C1C"/></svg>
+          <span>VoteFlow<em> / beta</em></span>
+        </a>
+        <p class="tag">AI phone agents for modern campaigns. Built in Washington.</p>
+      </div>
+      <div>
+        <h5>Platform</h5>
+        <ul><li><a href="#platform">Voice agents</a></li><li><a href="#cases">Use cases</a></li><li><a href="#metrics">Metrics</a></li><li><a href="#compliance">Compliance</a></li></ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#demo">Contact</a></li></ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">AI disclosure</a></li><li><a href="#">Responsible use</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© 2026 VoteFlow, Inc. · Washington, D.C.</div>
+      <div>VoteFlow discloses its AI status at the start of every call, per FEC and state law.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* dispatch feed */
+(function(){
+  const rows = [
+    ['PA-07','Persuasion','Soft→Firm',  'chip-green'],
+    ['AZ-06','GOTV · ES', 'Ride confirmed','chip-green'],
+    ['NV-03','RSVP',      '48 in 1h',    'chip-blue'],
+    ['MI-08','Survey',    'Absentee intent','chip-blue'],
+    ['WI-03','Voter ID',  'Score 4/5',   'chip-green'],
+    ['GA-SEN','Rapid resp','14.2k reached','chip-red'],
+    ['NC-13','GOTV',      'Poll confirmed','chip-green'],
+    ['OH-09','Fundraise', 'Re-engaged',   'chip-blue'],
+    ['CA-22','Persuasion','Objection→pivot','chip-muted'],
+    ['TX-28','RSVP · ES', '22 confirmed', 'chip-blue'],
+    ['FL-27','Voter ID',  'Flag round 2', 'chip-muted'],
+    ['NY-19','GOTV',      'Drop-off OK',  'chip-green'],
+  ];
+  const feed = document.getElementById('feed'); if(!feed) return;
+  let i = 0;
+  function pad(n){return String(n).padStart(2,'0');}
+  function ts(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}
+  function tick(){
+    const [dist, type, txt, chip] = rows[i++ % rows.length];
+    const el = document.createElement('div');
+    el.className = 'feed-row';
+    el.innerHTML = `<span class="t">${ts()}</span><span class="status-chip ${chip}">●</span><span class="dist">${dist}</span><span class="txt">${type} · ${txt}</span><span class="status-chip ${chip}">OK</span>`;
+    el.style.opacity=0; el.style.transform='translateY(-4px)';
+    feed.insertBefore(el, feed.firstChild);
+    while(feed.children.length > 6) feed.removeChild(feed.lastChild);
+    requestAnimationFrame(()=>{el.style.transition='opacity .3s ease, transform .3s ease';el.style.opacity=1;el.style.transform='translateY(0)'});
+  }
+  // seed a few
+  for(let k=0;k<5;k++) tick();
+  setInterval(tick, 3000);
+})();
+
+/* calls counter jitter */
+(function(){
+  const el = document.getElementById('k-calls'); if(!el) return;
+  let v = 3284;
+  setInterval(()=>{
+    v += Math.floor(Math.random()*9)-3;
+    if(v<3180) v=3180; if(v>3410) v=3410;
+    el.textContent = v.toLocaleString();
+  }, 1400);
+})();
+
+/* transcript typing */
+(function(){
+  const lines = [
+    {w:'ai', l:'VoteFlow', t:"Hi Margaret, this is Alex — an AI assistant calling on behalf of Sarah Chen for Congress. Got a minute?"},
+    {w:'v',  l:'Margaret', t:"I guess. I was about to start dinner."},
+    {w:'ai', l:'VoteFlow', t:"I'll be quick. Last time we spoke, prescription drug costs were top of mind — still the case?"},
+    {w:'v',  l:'Margaret', t:"My husband's insulin. It's unbelievable what they charge."},
+    {w:'ai', l:'VoteFlow', t:"Sarah co-sponsored the $35 insulin cap. Would knowing she's prioritized that change how you're thinking about the race?"},
+    {w:'v',  l:'Margaret', t:"Honestly, yes. I didn't know that."},
+    {w:'ai', l:'VoteFlow', t:"I'll text a one-pager and your polling place. Still the Linden Street address?"},
+  ];
+  const host = document.getElementById('transcript'); if(!host) return;
+  let li = 0, ci = 0, cur = null;
+  function step(){
+    if(li >= lines.length){
+      setTimeout(()=>{host.innerHTML=''; li=0; ci=0; cur=null; step();}, 5000);
+      return;
+    }
+    const L = lines[li];
+    if(!cur){
+      cur = document.createElement('p');
+      cur.className = 'msg '+L.w;
+      cur.innerHTML = `<span class="who">${L.l}</span><span class="txt"></span><span class="cursor"></span>`;
+      host.appendChild(cur);
+      host.scrollTop = host.scrollHeight;
+    }
+    const txt = cur.querySelector('.txt');
+    if(ci < L.t.length){
+      txt.textContent += L.t[ci++];
+      host.scrollTop = host.scrollHeight;
+      setTimeout(step, 14 + Math.random()*20);
+    } else {
+      const c = cur.querySelector('.cursor'); if(c) c.remove();
+      cur = null; li++; ci = 0;
+      setTimeout(step, 650);
+    }
+  }
+  step();
+})();
+
+/* timer */
+(function(){
+  const el = document.getElementById('timer'); if(!el) return;
+  let s = 192;
+  setInterval(()=>{ s++; const m=Math.floor(s/60), r=s%60; el.textContent = String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }, 1000);
+})();
+</script>
+
+</body>
+</html>
