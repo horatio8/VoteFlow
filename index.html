@@ -182,12 +182,11 @@ p{margin:0}
 .panel-h .more{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
 .feed{display:flex;flex-direction:column;gap:1px}
 .feed-row{
-  display:grid;grid-template-columns:60px 22px 50px 1fr auto;gap:10px;align-items:center;
+  display:grid;grid-template-columns:60px 22px 1fr auto;gap:10px;align-items:center;
   padding:8px 6px;border-bottom:1px dotted var(--line);font-size:13px;
 }
 .feed-row:last-child{border-bottom:0}
 .feed-row .t{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
-.feed-row .dist{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);font-weight:600}
 .feed-row .type{font-size:12px;color:var(--ink-2)}
 .feed-row .txt{color:var(--ink-2)}
 .feed-row .status-chip{
@@ -866,28 +865,28 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 /* dispatch feed */
 (function(){
   const rows = [
-    ['PA-07','Persuasion','Soft→Firm',  'chip-green'],
-    ['AZ-06','GOTV · ES', 'Ride confirmed','chip-green'],
-    ['NV-03','RSVP',      '48 in 1h',    'chip-blue'],
-    ['MI-08','Survey',    'Absentee intent','chip-blue'],
-    ['WI-03','Voter ID',  'Score 4/5',   'chip-green'],
-    ['GA-SEN','Rapid resp','14.2k reached','chip-red'],
-    ['NC-13','GOTV',      'Poll confirmed','chip-green'],
-    ['OH-09','Fundraise', 'Re-engaged',   'chip-blue'],
-    ['CA-22','Persuasion','Objection→pivot','chip-muted'],
-    ['TX-28','RSVP · ES', '22 confirmed', 'chip-blue'],
-    ['FL-27','Voter ID',  'Flag round 2', 'chip-muted'],
-    ['NY-19','GOTV',      'Drop-off OK',  'chip-green'],
+    ['Persuasion','Soft→Firm',  'chip-green'],
+    ['GOTV · ES', 'Ride confirmed','chip-green'],
+    ['RSVP',      '48 in 1h',    'chip-blue'],
+    ['Survey',    'Absentee intent','chip-blue'],
+    ['Voter ID',  'Score 4/5',   'chip-green'],
+    ['Rapid resp','14.2k reached','chip-red'],
+    ['GOTV',      'Poll confirmed','chip-green'],
+    ['Fundraise', 'Re-engaged',   'chip-blue'],
+    ['Persuasion','Objection→pivot','chip-muted'],
+    ['RSVP · ES', '22 confirmed', 'chip-blue'],
+    ['Voter ID',  'Flag round 2', 'chip-muted'],
+    ['GOTV',      'Drop-off OK',  'chip-green'],
   ];
   const feed = document.getElementById('feed'); if(!feed) return;
   let i = 0;
   function pad(n){return String(n).padStart(2,'0');}
   function ts(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}
   function tick(){
-    const [dist, type, txt, chip] = rows[i++ % rows.length];
+    const [type, txt, chip] = rows[i++ % rows.length];
     const el = document.createElement('div');
     el.className = 'feed-row';
-    el.innerHTML = `<span class="t">${ts()}</span><span class="status-chip ${chip}">●</span><span class="dist">${dist}</span><span class="txt">${type} · ${txt}</span><span class="status-chip ${chip}">OK</span>`;
+    el.innerHTML = `<span class="t">${ts()}</span><span class="status-chip ${chip}">●</span><span class="txt">${type} · ${txt}</span><span class="status-chip ${chip}">OK</span>`;
     el.style.opacity=0; el.style.transform='translateY(-4px)';
     feed.insertBefore(el, feed.firstChild);
     while(feed.children.length > 6) feed.removeChild(feed.lastChild);
