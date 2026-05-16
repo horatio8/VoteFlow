@@ -161,80 +161,20 @@ p{margin:0}
 .tb-right .bits{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
 
 .ops-kpis{display:grid;grid-template-columns:repeat(4,1fr)}
-.kpi{padding:18px 16px;border-right:1px solid var(--line)}
+@media(max-width:720px){.ops-kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{padding:36px 28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
 .kpi:last-child{border-right:0}
-.kpi .lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.kpi .n{font-family:var(--f-serif);font-size:30px;line-height:1;letter-spacing:-0.02em;color:var(--ink);font-feature-settings:"lnum","tnum"}
-.kpi .n .u{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:4px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
-.kpi .d{margin-top:4px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:4px}
+@media(max-width:720px){
+  .kpi{padding:28px 22px}
+  .kpi:nth-child(2n){border-right:0}
+  .kpi:nth-last-child(-n+2){border-bottom:0}
+}
+@media(min-width:721px){.kpi{border-bottom:0}}
+.kpi .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.kpi .n{font-family:var(--f-serif);font-size:56px;line-height:1;letter-spacing:-0.025em;color:var(--ink);font-feature-settings:"lnum","tnum"}
+.kpi .n .u{font-family:var(--f-mono);font-size:14px;color:var(--muted);margin-left:5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.kpi .d{margin-top:10px;font-size:13px;color:var(--green);display:flex;align-items:center;gap:4px}
 .kpi .d.neutral{color:var(--muted)}
-
-.ops-body{display:grid;grid-template-columns:1.1fr 1fr;border-top:1px solid var(--line)}
-@media(max-width:720px){.ops-body{grid-template-columns:1fr}}
-
-/* feed */
-.feed-panel{padding:14px 16px;border-right:1px solid var(--line)}
-@media(max-width:720px){.feed-panel{border-right:0;border-bottom:1px solid var(--line)}}
-.panel-h{
-  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
-}
-.panel-h h4{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.panel-h .more{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
-.feed{display:flex;flex-direction:column;gap:1px}
-.feed-row{
-  display:grid;grid-template-columns:60px 22px 1fr auto;gap:10px;align-items:center;
-  padding:8px 6px;border-bottom:1px dotted var(--line);font-size:13px;
-}
-.feed-row:last-child{border-bottom:0}
-.feed-row .t{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
-.feed-row .type{font-size:12px;color:var(--ink-2)}
-.feed-row .txt{color:var(--ink-2)}
-.feed-row .status-chip{
-  font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.05em;
-  padding:3px 7px;border-radius:999px;text-transform:uppercase;
-}
-.chip-green{background:var(--green-soft);color:var(--green)}
-.chip-red{background:var(--red-soft);color:var(--red)}
-.chip-blue{background:var(--blue-soft);color:var(--blue)}
-.chip-muted{background:var(--bg);color:var(--muted)}
-
-/* transcript */
-.call-panel{padding:14px 16px;display:flex;flex-direction:column;min-height:280px}
-.call-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.avatar{
-  width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;
-  display:grid;place-items:center;font-weight:600;font-size:12px;font-family:var(--f-sans);
-}
-.call-who .n{font-size:13px;font-weight:600}
-.call-who .m{font-family:var(--f-mono);font-size:10px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
-.call-timer{margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
-.transcript{
-  flex:1;border-top:1px solid var(--line);padding-top:10px;
-  font-size:13.5px;line-height:1.55;color:var(--ink-2);min-height:160px;
-}
-.transcript .msg{margin:0 0 10px;padding-left:38px;position:relative}
-.transcript .msg .who{
-  position:absolute;left:0;top:0;
-  font-family:var(--f-mono);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  padding:2px 5px;border-radius:4px;background:var(--bg);color:var(--muted);
-}
-.transcript .msg.ai .who{background:#0F1115;color:#fff}
-.transcript .msg.v .who{background:var(--blue-soft);color:var(--blue)}
-.cursor{display:inline-block;width:6px;height:1em;background:var(--ink-2);vertical-align:-2px;margin-left:1px;animation:blink 1s steps(2,end) infinite}
-@keyframes blink{50%{opacity:0}}
-.call-foot{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding-top:10px;border-top:1px solid var(--line);margin-top:8px;
-  font-family:var(--f-mono);font-size:11px;color:var(--muted);
-}
-.waves{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
-.waves span{width:2px;background:var(--red);border-radius:1px;animation:wave 1.1s ease-in-out infinite}
-.waves span:nth-child(1){height:4px;animation-delay:0s}
-.waves span:nth-child(2){height:9px;animation-delay:.1s}
-.waves span:nth-child(3){height:6px;animation-delay:.2s}
-.waves span:nth-child(4){height:11px;animation-delay:.3s}
-.waves span:nth-child(5){height:7px;animation-delay:.4s}
-@keyframes wave{0%,100%{transform:scaleY(.6)}50%{transform:scaleY(1.3)}}
 
 /* ——— section base ——— */
 section{padding:88px 0;border-bottom:1px solid var(--line)}
@@ -483,11 +423,9 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         <div class="card-toolbar">
           <div class="tabs">
             <div class="tab active">Live ops</div>
-            <div class="tab">Campaigns</div>
-            <div class="tab">Reports</div>
           </div>
           <div class="tb-right">
-            <span class="status"><span class="pulse"></span>On air · 4 campaigns</span>
+            <span class="status"><span class="pulse"></span>On air</span>
           </div>
         </div>
 
@@ -513,32 +451,6 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
             <div class="d neutral">live today</div>
           </div>
         </div>
-
-        <div class="ops-body">
-          <div class="feed-panel">
-            <div class="panel-h">
-              <h4>Dispatch log</h4>
-              <span class="more">last 90s</span>
-            </div>
-            <div class="feed" id="feed"></div>
-          </div>
-
-          <div class="call-panel">
-            <div class="call-head">
-              <div class="avatar">MH</div>
-              <div class="call-who">
-                <div class="n">Margaret H.</div>
-                <div class="m">PA-07 · Soft-R · Healthcare</div>
-              </div>
-              <div class="call-timer" id="timer">03:12</div>
-            </div>
-            <div class="transcript" id="transcript"></div>
-            <div class="call-foot">
-              <span class="waves"><span></span><span></span><span></span><span></span><span></span></span>
-              <span>VoteFlow agent · v4.2</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -547,7 +459,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 <!-- LOGOS -->
 <section class="logos" style="padding:28px 0">
   <div class="container logos-inner">
-    <span class="lbl">Trusted by 184+ campaigns and committees</span>
+    <span class="lbl">Trusted by 287+ Campaigns and committees, in the United States and abroad</span>
     <span class="logo-word">NORTHBOUND</span>
     <span class="logo-word i">Sawgrass Strategies</span>
     <span class="logo-word">CIVIC / SIGNAL</span>
@@ -862,41 +774,6 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 </footer>
 
 <script>
-/* dispatch feed */
-(function(){
-  const rows = [
-    ['Persuasion','Soft→Firm',  'chip-green'],
-    ['GOTV · ES', 'Ride confirmed','chip-green'],
-    ['RSVP',      '48 in 1h',    'chip-blue'],
-    ['Survey',    'Absentee intent','chip-blue'],
-    ['Voter ID',  'Score 4/5',   'chip-green'],
-    ['Rapid resp','14.2k reached','chip-red'],
-    ['GOTV',      'Poll confirmed','chip-green'],
-    ['Fundraise', 'Re-engaged',   'chip-blue'],
-    ['Persuasion','Objection→pivot','chip-muted'],
-    ['RSVP · ES', '22 confirmed', 'chip-blue'],
-    ['Voter ID',  'Flag round 2', 'chip-muted'],
-    ['GOTV',      'Drop-off OK',  'chip-green'],
-  ];
-  const feed = document.getElementById('feed'); if(!feed) return;
-  let i = 0;
-  function pad(n){return String(n).padStart(2,'0');}
-  function ts(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}
-  function tick(){
-    const [type, txt, chip] = rows[i++ % rows.length];
-    const el = document.createElement('div');
-    el.className = 'feed-row';
-    el.innerHTML = `<span class="t">${ts()}</span><span class="status-chip ${chip}">●</span><span class="txt">${type} · ${txt}</span><span class="status-chip ${chip}">OK</span>`;
-    el.style.opacity=0; el.style.transform='translateY(-4px)';
-    feed.insertBefore(el, feed.firstChild);
-    while(feed.children.length > 6) feed.removeChild(feed.lastChild);
-    requestAnimationFrame(()=>{el.style.transition='opacity .3s ease, transform .3s ease';el.style.opacity=1;el.style.transform='translateY(0)'});
-  }
-  // seed a few
-  for(let k=0;k<5;k++) tick();
-  setInterval(tick, 3000);
-})();
-
 /* calls counter jitter */
 (function(){
   const el = document.getElementById('k-calls'); if(!el) return;
@@ -906,53 +783,6 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
     if(v<3180) v=3180; if(v>3410) v=3410;
     el.textContent = v.toLocaleString();
   }, 1400);
-})();
-
-/* transcript typing */
-(function(){
-  const lines = [
-    {w:'ai', l:'VoteFlow', t:"Hi Margaret, this is Alex — an AI assistant calling on behalf of Sarah Chen for Congress. Got a minute?"},
-    {w:'v',  l:'Margaret', t:"I guess. I was about to start dinner."},
-    {w:'ai', l:'VoteFlow', t:"I'll be quick. Last time we spoke, prescription drug costs were top of mind — still the case?"},
-    {w:'v',  l:'Margaret', t:"My husband's insulin. It's unbelievable what they charge."},
-    {w:'ai', l:'VoteFlow', t:"Sarah co-sponsored the $35 insulin cap. Would knowing she's prioritized that change how you're thinking about the race?"},
-    {w:'v',  l:'Margaret', t:"Honestly, yes. I didn't know that."},
-    {w:'ai', l:'VoteFlow', t:"I'll text a one-pager and your polling place. Still the Linden Street address?"},
-  ];
-  const host = document.getElementById('transcript'); if(!host) return;
-  let li = 0, ci = 0, cur = null;
-  function step(){
-    if(li >= lines.length){
-      setTimeout(()=>{host.innerHTML=''; li=0; ci=0; cur=null; step();}, 5000);
-      return;
-    }
-    const L = lines[li];
-    if(!cur){
-      cur = document.createElement('p');
-      cur.className = 'msg '+L.w;
-      cur.innerHTML = `<span class="who">${L.l}</span><span class="txt"></span><span class="cursor"></span>`;
-      host.appendChild(cur);
-      host.scrollTop = host.scrollHeight;
-    }
-    const txt = cur.querySelector('.txt');
-    if(ci < L.t.length){
-      txt.textContent += L.t[ci++];
-      host.scrollTop = host.scrollHeight;
-      setTimeout(step, 14 + Math.random()*20);
-    } else {
-      const c = cur.querySelector('.cursor'); if(c) c.remove();
-      cur = null; li++; ci = 0;
-      setTimeout(step, 650);
-    }
-  }
-  step();
-})();
-
-/* timer */
-(function(){
-  const el = document.getElementById('timer'); if(!el) return;
-  let s = 192;
-  setInterval(()=>{ s++; const m=Math.floor(s/60), r=s%60; el.textContent = String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }, 1000);
 })();
 </script>
 
