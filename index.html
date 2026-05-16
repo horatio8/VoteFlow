@@ -91,8 +91,7 @@ p{margin:0}
 }
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-0.015em}
-.brand svg{width:22px;height:22px}
-.brand em{font-style:normal;color:var(--muted);font-weight:500}
+.brand img{height:28px;width:auto;display:block}
 .nav-links{display:flex;align-items:center;gap:28px;white-space:nowrap}
 .nav-links a{font-size:14px;color:var(--ink-2);font-weight:500}
 .nav-links a:hover{color:var(--ink)}
@@ -190,8 +189,6 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
   display:flex;align-items:center;gap:40px;justify-content:center;flex-wrap:wrap;
 }
 .logos .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.logo-word{font-family:var(--f-serif);font-size:22px;color:var(--ink-2);letter-spacing:-0.01em;opacity:.75}
-.logo-word.i{font-style:italic}
 
 /* ——— problem (clean tiles) ——— */
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -254,17 +251,16 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .metrics .sec-head h2 em{color:rgba(255,255,255,0.6)}
 .metrics .desc{color:rgba(255,255,255,0.6)}
 .m-row{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
   border:1px solid rgba(255,255,255,0.12);border-radius:var(--r-lg);overflow:hidden;
   background:rgba(255,255,255,0.02);
 }
-@media(max-width:900px){.m-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.m-row{grid-template-columns:1fr}}
 .m-cell{padding:26px 22px;border-right:1px solid rgba(255,255,255,0.1)}
-.m-cell:nth-child(4n){border-right:0}
+.m-cell:last-child{border-right:0}
 @media(max-width:900px){
-  .m-cell{border-bottom:1px solid rgba(255,255,255,0.1)}
-  .m-cell:nth-child(2n){border-right:0}
-  .m-cell:nth-last-child(-n+2){border-bottom:0}
+  .m-cell{border-right:0;border-bottom:1px solid rgba(255,255,255,0.1)}
+  .m-cell:last-child{border-bottom:0}
 }
 .m-cell .lbl{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:12px}
 .m-cell .big{font-family:var(--f-serif);font-size:52px;line-height:1;letter-spacing:-0.02em}
@@ -331,6 +327,66 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .comp-card p{color:var(--muted);font-size:14px;line-height:1.55;margin-bottom:16px}
 .badges{display:flex;flex-wrap:wrap;gap:6px}
 
+/* ——— pricing ——— */
+.price-grid{
+  display:grid;grid-template-columns:1.05fr 1fr;gap:14px;
+}
+@media(max-width:900px){.price-grid{grid-template-columns:1fr}}
+.price-card{
+  background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:32px;
+  display:flex;flex-direction:column;justify-content:space-between;gap:22px;
+}
+.price-card .tag{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
+}
+.price-card .amt{
+  font-family:var(--f-serif);font-size:clamp(64px,7vw,96px);line-height:1;letter-spacing:-0.025em;
+  font-feature-settings:"lnum","tnum";
+}
+.price-card .amt .u{
+  font-family:var(--f-mono);font-size:14px;color:rgba(255,255,255,0.6);
+  margin-left:8px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+}
+.price-card .blurb{font-size:14.5px;color:rgba(255,255,255,0.78);max-width:380px;line-height:1.55}
+.price-card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.price-card ul li{
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:14px;color:rgba(255,255,255,0.85);
+}
+.price-card ul li svg{color:#fff;flex:none;margin-top:2px;opacity:.85}
+.price-card .price-cta{
+  display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+  background:#fff;color:var(--ink);font-weight:500;font-size:14px;
+  padding:10px 16px;border-radius:var(--r-md);
+}
+
+.price-compare{
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.comp-row{
+  display:grid;grid-template-columns:1.1fr 0.9fr 1.4fr;gap:18px;align-items:center;
+  padding:20px 24px;border-bottom:1px solid var(--line);
+}
+.comp-row:last-child{border-bottom:0}
+@media(max-width:540px){
+  .comp-row{grid-template-columns:1fr 1fr;gap:8px 14px}
+  .comp-row .note{grid-column:1 / -1;font-size:12.5px}
+}
+.comp-row .who{font-size:14.5px;font-weight:600;color:var(--ink)}
+.comp-row .who .sub{display:block;font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.comp-row .cost{font-family:var(--f-serif);font-size:26px;letter-spacing:-0.02em;color:var(--ink-2);line-height:1}
+.comp-row .cost .u{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:4px}
+.comp-row .note{font-size:13.5px;color:var(--muted);line-height:1.55}
+
+.price-foot{
+  margin-top:22px;font-size:13.5px;color:var(--muted);
+  display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.price-foot a{color:var(--ink);font-weight:500;border-bottom:1px solid var(--line-2)}
+.price-foot a:hover{border-color:var(--ink)}
+
 /* ——— cta ——— */
 .cta-wrap{
   background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
@@ -378,9 +434,8 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 <!-- NAV -->
 <header class="nav">
   <div class="container nav-inner">
-    <a class="brand" href="#top">
-      <svg viewBox="0 0 40 40"><path d="M5 9 L20 20 L5 31 Z" fill="#1E3A5F"/><path d="M20 9 L35 20 L20 31 Z" fill="#B91C1C"/></svg>
-      <span>VoteFlow<em> / beta</em></span>
+    <a class="brand" href="#top" aria-label="VoteFlow home">
+      <img src="assets/voteflow-logo.png" alt="VoteFlow"/>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#platform">Platform</a>
@@ -391,7 +446,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
     </nav>
     <div class="nav-cta">
       <a href="#" class="btn btn-sm btn-ghost">Sign in</a>
-      <a href="#demo" class="btn btn-sm btn-primary">Book a demo <span class="arrow">→</span></a>
+      <a href="https://calendly.com/voteflow" target="_blank" rel="noopener" class="btn btn-sm btn-primary">Book a demo <span class="arrow">→</span></a>
     </div>
   </div>
 </header>
@@ -405,7 +460,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         <h1>Every voter, on the phone, <em>tonight.</em></h1>
         <p class="lede">VoteFlow deploys thousands of human-sounding AI phone agents that hold real, branching conversations with voters — at the speed and scale campaigns actually need.</p>
         <div class="hero-actions">
-          <a href="#demo" class="btn btn-primary">Book a demo <span class="arrow">→</span></a>
+          <a href="https://calendly.com/voteflow" target="_blank" rel="noopener" class="btn btn-primary">Book a demo <span class="arrow">→</span></a>
           <a href="#platform" class="btn btn-ghost">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             Hear a live call
@@ -460,11 +515,6 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 <section class="logos" style="padding:28px 0">
   <div class="container logos-inner">
     <span class="lbl">Trusted by 287+ Campaigns and committees, in the United States and abroad</span>
-    <span class="logo-word">NORTHBOUND</span>
-    <span class="logo-word i">Sawgrass Strategies</span>
-    <span class="logo-word">CIVIC / SIGNAL</span>
-    <span class="logo-word i">Bellwether</span>
-    <span class="logo-word">PRECINCT 21</span>
   </div>
 </section>
 
@@ -542,24 +592,19 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
   <div class="container">
     <div class="sec-head">
       <span class="kicker">The record</span>
-      <h2>Two cycles. <em>47 million conversations.</em></h2>
+      <h2>Two cycles. <em>1,281,000 conversations.</em></h2>
       <p class="desc">Aggregate performance across VoteFlow deployments in the 2024 and 2025 cycles.</p>
     </div>
     <div class="m-row">
       <div class="m-cell">
         <div class="lbl">Voter conversations</div>
-        <div class="big">47.2<span class="u">M</span></div>
-        <div class="sub">Across 184 campaigns</div>
+        <div class="big">4,017.2<span class="u">hr</span></div>
+        <div class="sub">Across 287 campaigns</div>
       </div>
       <div class="m-cell">
         <div class="lbl">Contact rate</div>
         <div class="big">38<span class="u">%</span></div>
         <div class="sub">vs. 4% for legacy dialers</div>
-      </div>
-      <div class="m-cell">
-        <div class="lbl">Cost / contact</div>
-        <div class="big">$0.41</div>
-        <div class="sub">vs. $14.80 for canvassers</div>
       </div>
       <div class="m-cell">
         <div class="lbl">Voter ID accuracy</div>
@@ -632,11 +677,11 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         <p class="q">We found <em>11,000 persuadable voters</em> in the last ten days our canvass had never reached. VoteFlow talked to all of them. We won by 4,200.</p>
         <div class="who-cite">
           <span class="a">JR</span>
-          <span><strong>J. Reeves</strong> · Campaign Manager, competitive U.S. House race · 2024</span>
+          <span><strong>JR</strong> · Campaign Manager, competitive U.S. House race · 2024</span>
         </div>
       </div>
       <div class="mini-stats">
-        <div class="c"><div class="n">184</div><div class="l">Campaigns run</div></div>
+        <div class="c"><div class="n">287</div><div class="l">Campaigns run</div></div>
         <div class="c"><div class="n">67<span class="u">%</span></div><div class="l">Win primary metric</div></div>
         <div class="c"><div class="n">0</div><div class="l">TCPA violations, all time</div></div>
         <div class="c"><div class="n">11</div><div class="l">Languages deployed</div></div>
@@ -671,6 +716,57 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         <p>Every call recorded and auditable. AI identity disclosed up front. Full provenance on every conversation, pullable on demand.</p>
         <div class="badges"><span class="pill">Audit log</span><span class="pill">AI disclosure</span><span class="pill">State AG playbook</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--surface)">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">Pricing</span>
+      <h2>Priced like advanced SMS. <em>Talks like a canvasser.</em></h2>
+      <p class="desc">Per-completed-conversation pricing in the same range as advanced political SMS — except every contact is a real, two-way call with voter ID and verbatim issues attached. Volume tiers locked for the full cycle.</p>
+    </div>
+
+    <div class="price-grid">
+      <div class="price-card">
+        <div>
+          <div class="tag">VoteFlow · per completed contact</div>
+          <div class="amt" style="margin-top:12px">$0.41<span class="u">/contact</span></div>
+          <p class="blurb" style="margin-top:14px">Pricing scales down with universe size. Most campaigns land between $0.30 and $0.55 per completed conversation, locked across primary and general.</p>
+        </div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Two-way, branching conversation</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Voter ID 1–5 + verbatim issues on every call</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>VAN / NGP / Snowflake sync nightly</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>50-state compliance + audit log included</li>
+        </ul>
+        <a href="https://calendly.com/voteflow" target="_blank" rel="noopener" class="price-cta">Walk through your numbers <span class="arrow">→</span></a>
+      </div>
+
+      <div class="price-compare">
+        <div class="comp-row">
+          <div class="who">Advanced political SMS<span class="sub">P2P + AI replies</span></div>
+          <div class="cost">$0.30–0.55<span class="u">/send</span></div>
+          <div class="note">One-way blast with templated reply parsing. No voter ID, no real conversation.</div>
+        </div>
+        <div class="comp-row">
+          <div class="who">Legacy robo-dialer<span class="sub">Pre-recorded</span></div>
+          <div class="cost">$0.12<span class="u">/dial</span></div>
+          <div class="note">3.8% pickup. Hung up on in seconds. No data captured.</div>
+        </div>
+        <div class="comp-row">
+          <div class="who">Live canvasser<span class="sub">Phone bank</span></div>
+          <div class="cost">$14.80<span class="u">/contact</span></div>
+          <div class="note">Skilled, scarce, slow. Can't scale to a state-wide universe in 72 hours.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-foot">
+      <span>Custom pricing on universes &gt; 1M and statewide deployments.</span>
+      <a href="https://calendly.com/voteflow" target="_blank" rel="noopener">Get a written quote →</a>
     </div>
   </div>
 </section>
@@ -747,11 +843,10 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
   <div class="container">
     <div class="foot-top">
       <div>
-        <a class="brand" href="#top">
-          <svg viewBox="0 0 40 40" style="width:22px;height:22px"><path d="M5 9 L20 20 L5 31 Z" fill="#1E3A5F"/><path d="M20 9 L35 20 L20 31 Z" fill="#B91C1C"/></svg>
-          <span>VoteFlow<em> / beta</em></span>
+        <a class="brand" href="#top" aria-label="VoteFlow home">
+          <img src="assets/voteflow-logo.png" alt="VoteFlow"/>
         </a>
-        <p class="tag">AI phone agents for modern campaigns. Built in Washington.</p>
+        <p class="tag">AI phone agents for modern campaigns.</p>
       </div>
       <div>
         <h5>Platform</h5>
@@ -767,8 +862,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
       </div>
     </div>
     <div class="foot-bottom">
-      <div>© 2026 VoteFlow, Inc. · Washington, D.C.</div>
-      <div>VoteFlow discloses its AI status at the start of every call, per FEC and state law.</div>
+      <div>© 2026 VoteFlow, Inc.</div>
     </div>
   </div>
 </footer>
