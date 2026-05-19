@@ -387,7 +387,7 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .price-foot a{color:var(--ink);font-weight:500;border-bottom:1px solid var(--line-2)}
 .price-foot a:hover{border-color:var(--ink)}
 
-/* ——— cta ——— */
+/* ——— book a pilot call ——— */
 .demo-section{
   background:
     radial-gradient(1100px 480px at 85% -10%, rgba(185,28,28,0.18), transparent 60%),
@@ -395,48 +395,15 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
     linear-gradient(180deg, #16223A 0%, #0F1730 100%);
   color:#fff;border-bottom:0;
 }
-.demo-section .cta-wrap{
+.demo-section .demo-head{margin:0 auto 40px;text-align:center;max-width:720px}
+.demo-section .demo-head h2{color:#fff}
+.demo-section .demo-head h2 em{color:rgba(255,255,255,0.7)}
+.demo-section .demo-head .desc{color:rgba(255,255,255,0.7);margin-left:auto;margin-right:auto;max-width:580px}
+.scheduler-embed{
+  background:#fff;border-radius:var(--r-lg);overflow:hidden;
+  max-width:780px;margin:0 auto;
   box-shadow:0 1px 2px rgba(0,0,0,0.05), 0 30px 60px -20px rgba(0,0,0,0.45);
 }
-.demo-section .sec-head .kicker,
-.demo-section .cta-copy .kicker{color:rgba(255,255,255,0.7)}
-.cta-wrap{
-  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
-  padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
-}
-@media(max-width:900px){.cta-wrap{grid-template-columns:1fr;padding:28px;gap:32px}}
-.cta-copy h2{font-size:clamp(28px,3vw,40px);margin-bottom:14px}
-.cta-copy .desc{color:var(--muted);font-size:15.5px;max-width:440px;margin-bottom:22px}
-.check-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.check-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink-2)}
-.check-list li svg{color:var(--green);flex:none;margin-top:2px}
-
-.form{display:flex;flex-direction:column;gap:12px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.form-row.one{grid-template-columns:1fr}
-.field label, .field legend{display:block;font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;padding:0}
-.field label .req, .field legend .req{color:var(--red);margin-left:2px;font-weight:600}
-.field label .opt, .field legend .opt{color:var(--faint);text-transform:none;letter-spacing:0;font-family:var(--f-sans);font-size:11px;margin-left:4px;font-weight:400}
-.field input, .field select, .field textarea{
-  width:100%;font-family:var(--f-sans);font-size:14px;color:var(--ink);
-  padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);
-  transition:border .15s, box-shadow .15s;
-}
-.field textarea{resize:vertical;min-height:84px;line-height:1.5}
-.field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(15,17,21,0.06)}
-.role-fs{border:0;margin:0;padding:0}
-.role-fs .radio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-@media(max-width:540px){.role-fs .radio-grid{grid-template-columns:1fr}}
-.radio{
-  display:flex;align-items:center;gap:9px;
-  padding:9px 12px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);
-  font-size:13.5px;color:var(--ink-2);cursor:pointer;transition:border .15s, background .15s;
-}
-.radio:hover{border-color:var(--ink-2)}
-.radio input{accent-color:var(--ink);width:14px;height:14px;margin:0}
-.radio:has(input:checked){border-color:var(--ink);background:var(--bg)}
-.radio:has(input:checked) span{color:var(--ink);font-weight:500}
-.form-foot{font-size:12px;color:var(--muted);margin-top:4px}
 
 /* ——— footer ——— */
 footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--line);border-bottom:0}
@@ -472,8 +439,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
       <a href="#pricing">Pricing</a>
     </nav>
     <div class="nav-cta">
-      <a href="#" class="btn btn-sm btn-ghost">Sign in</a>
-      <a href="https://scheduler.zoom.us/james-flynn-lk1rfj/voteflow" target="_blank" rel="noopener" class="btn btn-sm btn-primary">Book a demo <span class="arrow">→</span></a>
+      <a href="#demo" class="btn btn-sm btn-primary">Book a pilot call <span class="arrow">→</span></a>
     </div>
   </div>
 </header>
@@ -487,12 +453,11 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         <h1>Every voter, on the phone, <em>tonight.</em></h1>
         <p class="lede">VoteFlow deploys thousands of human-sounding AI phone agents that hold real, branching conversations with voters — at the speed and scale campaigns actually need.</p>
         <div class="hero-actions">
-          <a href="https://scheduler.zoom.us/james-flynn-lk1rfj/voteflow" target="_blank" rel="noopener" class="btn btn-primary">Book a demo <span class="arrow">→</span></a>
+          <a href="#demo" class="btn btn-primary">Book a pilot call <span class="arrow">→</span></a>
           <a href="#pricing" class="btn btn-ghost">See pricing</a>
         </div>
         <div class="hero-meta">
           <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>FEC &amp; TCPA ready</span>
-          <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SOC 2 Type II</span>
           <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Syncs to VAN &amp; NGP</span>
         </div>
       </div>
@@ -731,8 +696,8 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
       <div class="comp-card">
         <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
         <h3>Security</h3>
-        <p>AES-256 at rest. SOC 2 Type II audited. Single-tenant option by state. Your universe never crosses another campaign's tenant.</p>
-        <div class="badges"><span class="pill">SOC 2 II</span><span class="pill">AES-256</span><span class="pill">SSO + SCIM</span><span class="pill">Single-tenant</span></div>
+        <p>AES-256 at rest. Single-tenant option by state. Your universe never crosses another campaign's tenant.</p>
+        <div class="badges"><span class="pill">AES-256</span><span class="pill">SSO + SCIM</span><span class="pill">Single-tenant</span></div>
       </div>
       <div class="comp-card">
         <div class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg></div>
@@ -798,72 +763,18 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 <!-- CTA -->
 <section id="demo" class="demo-section">
   <div class="container">
-    <div class="cta-wrap">
-      <div class="cta-copy">
-        <span class="kicker">Book a demo</span>
-        <h2>Let's run one evening on <em>your race.</em></h2>
-        <p class="desc">Tell us the district, universe size, and window. In 48 hours we'll build a working voice agent trained on your platform — and walk you through the projected numbers before you commit a dollar.</p>
-        <ul class="check-list">
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Working voice agent in your candidate's voice</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Projected contact, persuasion &amp; turnout lift</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compliance review with your general counsel</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pricing locked for the full cycle</li>
-        </ul>
-      </div>
-      <form class="form" id="demoForm">
-        <div class="form-row">
-          <div class="field"><label for="firstName">First name <span class="req">*</span></label><input id="firstName" name="firstName" required placeholder="Jane"/></div>
-          <div class="field"><label for="lastName">Last name <span class="req">*</span></label><input id="lastName" name="lastName" required placeholder="Doe"/></div>
-        </div>
-        <div class="form-row one">
-          <div class="field"><label for="email">Email address <span class="req">*</span></label><input id="email" name="email" type="email" required placeholder="jane@campaign.com"/></div>
-        </div>
-        <div class="form-row one">
-          <div class="field"><label for="additionalEmails">Additional attendee emails <span class="opt">(optional)</span></label><input id="additionalEmails" name="additionalEmails" placeholder="alex@campaign.com, taylor@campaign.com"/></div>
-        </div>
-        <div class="form-row">
-          <div class="field"><label for="countryCode">Country code <span class="req">*</span></label>
-            <select id="countryCode" name="countryCode" required>
-              <option value="+1" selected>🇺🇸 +1 (US / CA)</option>
-              <option value="+44">🇬🇧 +44 (UK)</option>
-              <option value="+61">🇦🇺 +61 (AU)</option>
-              <option value="+353">🇮🇪 +353 (IE)</option>
-              <option value="+49">🇩🇪 +49 (DE)</option>
-              <option value="+33">🇫🇷 +33 (FR)</option>
-              <option value="+34">🇪🇸 +34 (ES)</option>
-              <option value="+39">🇮🇹 +39 (IT)</option>
-              <option value="+55">🇧🇷 +55 (BR)</option>
-              <option value="+52">🇲🇽 +52 (MX)</option>
-              <option value="+91">🇮🇳 +91 (IN)</option>
-              <option value="+81">🇯🇵 +81 (JP)</option>
-              <option value="other">Other…</option>
-            </select>
-          </div>
-          <div class="field"><label for="phone">Phone number <span class="req">*</span></label><input id="phone" name="phone" type="tel" required placeholder="(215) 555-0101"/></div>
-        </div>
-        <div class="form-row one">
-          <div class="field"><label for="race">Race / committee <span class="opt">(optional)</span></label><input id="race" name="race" placeholder="PA-07 · U.S. House"/></div>
-        </div>
-        <div class="form-row one">
-          <fieldset class="field role-fs">
-            <legend>Role <span class="opt">(optional)</span></legend>
-            <div class="radio-grid">
-              <label class="radio"><input type="radio" name="role" value="Campaign Manager"/><span>Campaign Manager</span></label>
-              <label class="radio"><input type="radio" name="role" value="Field Director"/><span>Field Director</span></label>
-              <label class="radio"><input type="radio" name="role" value="Consultant / Agency"/><span>Consultant / Agency</span></label>
-              <label class="radio"><input type="radio" name="role" value="Party Committee"/><span>Party Committee</span></label>
-              <label class="radio"><input type="radio" name="role" value="Independent Expenditure"/><span>Independent Expenditure</span></label>
-            </div>
-          </fieldset>
-        </div>
-        <div class="form-row one">
-          <div class="field"><label for="notes">Please share anything that will help prepare for our meeting <span class="opt">(optional)</span></label><textarea id="notes" name="notes" rows="3" placeholder="Universe size, timing, anything we should know…"></textarea></div>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
-          <button type="submit" class="btn btn-primary">Continue to scheduling <span class="arrow">→</span></button>
-        </div>
-        <div class="form-foot">You'll be taken to our scheduler to pick a time. The details you've shared come with you.</div>
-      </form>
+    <div class="sec-head demo-head">
+      <h2>Book a pilot call.</h2>
+      <p class="desc">Pick a time below. We'll walk through your race, your universe, and the numbers you'd see from a one-night pilot — before you commit a dollar.</p>
+    </div>
+    <div class="scheduler-embed">
+      <iframe
+        src="https://scheduler.zoom.us/james-flynn-lk1rfj/voteflow?embed=true"
+        title="Book a pilot call with VoteFlow"
+        loading="lazy"
+        frameborder="0"
+        style="width:750px;height:560px;max-width:100%;border:0;display:block;margin:0 auto"
+      ></iframe>
     </div>
   </div>
 </section>
@@ -907,67 +818,6 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
     if(v<3180) v=3180; if(v>3410) v=3410;
     el.textContent = v.toLocaleString();
   }, 1400);
-})();
-
-/* demo form -> Zoom scheduler with prefilled values */
-(function(){
-  const SCHEDULER = 'https://scheduler.zoom.us/james-flynn-lk1rfj/voteflow';
-  const form = document.getElementById('demoForm'); if(!form) return;
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const btn = form.querySelector('button[type=submit]');
-    if(btn){ btn.disabled = true; btn.textContent = 'Redirecting…'; }
-
-    const v = id => (document.getElementById(id)?.value || '').trim();
-    const role = (form.querySelector('input[name="role"]:checked') || {}).value || '';
-
-    const firstName = v('firstName');
-    const lastName  = v('lastName');
-    const fullName  = [firstName, lastName].filter(Boolean).join(' ');
-    const email     = v('email');
-    const addlEmail = v('additionalEmails');
-    const countryCode = v('countryCode');
-    const phoneRaw  = v('phone');
-    const phone     = phoneRaw
-      ? (countryCode && countryCode !== 'other' && !phoneRaw.startsWith('+')
-          ? `${countryCode} ${phoneRaw}`
-          : phoneRaw)
-      : '';
-    const race      = v('race');
-    const notesIn   = v('notes');
-
-    const notesParts = [
-      race && `Race / committee: ${race}`,
-      role && `Role: ${role}`,
-      addlEmail && `Additional attendees: ${addlEmail}`,
-      notesIn,
-    ].filter(Boolean);
-    const notes = notesParts.join('\n');
-
-    /* Zoom Scheduler reads a small set of prefill keys, but the exact names
-       vary across scheduler revisions and per-question custom IDs. We pass
-       each value under every reasonable alias; the scheduler picks up what
-       it recognizes and ignores the rest. */
-    const params = new URLSearchParams();
-    const setMany = (keys, val) => { if(val) keys.forEach(k => params.set(k, val)); };
-
-    setMany(['name','fullName','full_name'], fullName);
-    setMany(['firstName','first_name','first','givenName','given_name'], firstName);
-    setMany(['lastName','last_name','last','familyName','family_name','surname'], lastName);
-    setMany(['email','emailAddress','email_address'], email);
-    setMany(['additionalEmails','additional_emails','additionalAttendeeEmails','cc','guestEmails','guest_emails'], addlEmail);
-    setMany(['phone','phoneNumber','phone_number','tel','mobile'], phone);
-    if(countryCode && countryCode !== 'other'){
-      setMany(['countryCode','country_code','phoneCountryCode','phone_country_code'], countryCode);
-    }
-    setMany(['race','raceCommittee','race_committee','committee'], race);
-    setMany(['role','attendeeRole','attendee_role'], role);
-    setMany(['notes','note','message','comments','additionalNotes','additional_notes','question','reason'], notes);
-
-    const url = SCHEDULER + (params.toString() ? '?' + params.toString() : '');
-    window.location.assign(url);
-  });
 })();
 </script>
 
