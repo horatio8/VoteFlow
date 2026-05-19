@@ -786,11 +786,11 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Pricing locked for the full cycle</li>
         </ul>
       </div>
-      <form class="form" onsubmit="event.preventDefault(); const b=this.querySelector('button[type=submit]'); b.innerText='Requested ✓'; b.disabled=true;">
+      <form class="form" id="demoForm">
         <div class="form-row">
-          <div class="field"><label for="name">Full name</label><input id="name" required placeholder="Jane Doe"/></div>
+          <div class="field"><label for="name">Full name</label><input id="name" name="name" required placeholder="Jane Doe"/></div>
           <div class="field"><label for="role">Role</label>
-            <select id="role" required>
+            <select id="role" name="role" required>
               <option value="">Select…</option>
               <option>Campaign Manager</option>
               <option>Field Director</option>
@@ -801,13 +801,13 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
           </div>
         </div>
         <div class="form-row">
-          <div class="field"><label for="email">Work email</label><input id="email" type="email" required placeholder="jane@campaign.com"/></div>
-          <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" placeholder="(215) 555-0101"/></div>
+          <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" required placeholder="jane@campaign.com"/></div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" placeholder="(215) 555-0101"/></div>
         </div>
         <div class="form-row">
-          <div class="field"><label for="race">Race / committee</label><input id="race" placeholder="PA-07 · U.S. House"/></div>
+          <div class="field"><label for="race">Race / committee</label><input id="race" name="race" placeholder="PA-07 · U.S. House"/></div>
           <div class="field"><label for="universe">Universe size</label>
-            <select id="universe">
+            <select id="universe" name="universe">
               <option value="">Select…</option>
               <option>Under 50k</option>
               <option>50k – 250k</option>
@@ -818,7 +818,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         </div>
         <div class="form-row one">
           <div class="field"><label for="when">Live by</label>
-            <select id="when">
+            <select id="when" name="when">
               <option value="">Select…</option>
               <option>Within 30 days</option>
               <option>This quarter</option>
@@ -829,10 +829,10 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
           </div>
         </div>
         <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
-          <button type="submit" class="btn btn-primary">Request demo <span class="arrow">→</span></button>
+          <button type="submit" class="btn btn-primary">Continue to scheduling <span class="arrow">→</span></button>
           <a href="#platform" class="btn btn-ghost">Or hear a sample call</a>
         </div>
-        <div class="form-foot">Briefings are 1:1 with our partner team. 24h response.</div>
+        <div class="form-foot">You'll be taken to our scheduler to pick a time. We'll bring the details you've shared into the meeting.</div>
       </form>
     </div>
   </div>
@@ -877,6 +877,49 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
     if(v<3180) v=3180; if(v>3410) v=3410;
     el.textContent = v.toLocaleString();
   }, 1400);
+})();
+
+/* demo form -> Zoom scheduler with prefilled values */
+(function(){
+  const SCHEDULER = 'https://scheduler.zoom.us/james-flynn-lk1rfj/voteflow';
+  const form = document.getElementById('demoForm'); if(!form) return;
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = form.querySelector('button[type=submit]');
+    if(btn){ btn.disabled = true; btn.textContent = 'Redirecting…'; }
+
+    const v = id => (document.getElementById(id)?.value || '').trim();
+    const name = v('name');
+    const email = v('email');
+    const phone = v('phone');
+    const role = v('role');
+    const race = v('race');
+    const universe = v('universe');
+    const when = v('when');
+
+    const notes = [
+      role     && `Role: ${role}`,
+      race     && `Race / committee: ${race}`,
+      universe && `Universe size: ${universe}`,
+      when     && `Live by: ${when}`,
+    ].filter(Boolean).join(' · ');
+
+    const params = new URLSearchParams();
+    if(name)  params.set('name',  name);
+    if(email) params.set('email', email);
+    if(phone) params.set('phone', phone);
+    if(notes){
+      // pass under several common keys so whichever the scheduler reads gets populated
+      params.set('notes', notes);
+      params.set('note', notes);
+      params.set('message', notes);
+      params.set('comments', notes);
+    }
+
+    const url = SCHEDULER + (params.toString() ? '?' + params.toString() : '');
+    window.location.assign(url);
+  });
 })();
 </script>
 
