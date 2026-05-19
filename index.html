@@ -388,6 +388,18 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .price-foot a:hover{border-color:var(--ink)}
 
 /* ——— cta ——— */
+.demo-section{
+  background:
+    radial-gradient(1100px 480px at 85% -10%, rgba(185,28,28,0.18), transparent 60%),
+    radial-gradient(900px 520px at 10% 110%, rgba(30,58,95,0.55), transparent 65%),
+    linear-gradient(180deg, #16223A 0%, #0F1730 100%);
+  color:#fff;border-bottom:0;
+}
+.demo-section .cta-wrap{
+  box-shadow:0 1px 2px rgba(0,0,0,0.05), 0 30px 60px -20px rgba(0,0,0,0.45);
+}
+.demo-section .sec-head .kicker,
+.demo-section .cta-copy .kicker{color:rgba(255,255,255,0.7)}
 .cta-wrap{
   background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);
   padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
@@ -402,13 +414,28 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .form{display:flex;flex-direction:column;gap:12px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-row.one{grid-template-columns:1fr}
-.field label{display:block;font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.field input, .field select{
+.field label, .field legend{display:block;font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;padding:0}
+.field label .req, .field legend .req{color:var(--red);margin-left:2px;font-weight:600}
+.field label .opt, .field legend .opt{color:var(--faint);text-transform:none;letter-spacing:0;font-family:var(--f-sans);font-size:11px;margin-left:4px;font-weight:400}
+.field input, .field select, .field textarea{
   width:100%;font-family:var(--f-sans);font-size:14px;color:var(--ink);
   padding:10px 12px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);
   transition:border .15s, box-shadow .15s;
 }
-.field input:focus, .field select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(15,17,21,0.06)}
+.field textarea{resize:vertical;min-height:84px;line-height:1.5}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(15,17,21,0.06)}
+.role-fs{border:0;margin:0;padding:0}
+.role-fs .radio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+@media(max-width:540px){.role-fs .radio-grid{grid-template-columns:1fr}}
+.radio{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 12px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);
+  font-size:13.5px;color:var(--ink-2);cursor:pointer;transition:border .15s, background .15s;
+}
+.radio:hover{border-color:var(--ink-2)}
+.radio input{accent-color:var(--ink);width:14px;height:14px;margin:0}
+.radio:has(input:checked){border-color:var(--ink);background:var(--bg)}
+.radio:has(input:checked) span{color:var(--ink);font-weight:500}
 .form-foot{font-size:12px;color:var(--muted);margin-top:4px}
 
 /* ——— footer ——— */
@@ -461,10 +488,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
         <p class="lede">VoteFlow deploys thousands of human-sounding AI phone agents that hold real, branching conversations with voters — at the speed and scale campaigns actually need.</p>
         <div class="hero-actions">
           <a href="https://scheduler.zoom.us/james-flynn-lk1rfj/voteflow" target="_blank" rel="noopener" class="btn btn-primary">Book a demo <span class="arrow">→</span></a>
-          <a href="#platform" class="btn btn-ghost">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            Hear a live call
-          </a>
+          <a href="#pricing" class="btn btn-ghost">See pricing</a>
         </div>
         <div class="hero-meta">
           <span class="item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>FEC &amp; TCPA ready</span>
@@ -772,7 +796,7 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
 </section>
 
 <!-- CTA -->
-<section id="demo" style="background:var(--surface)">
+<section id="demo" class="demo-section">
   <div class="container">
     <div class="cta-wrap">
       <div class="cta-copy">
@@ -788,51 +812,57 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
       </div>
       <form class="form" id="demoForm">
         <div class="form-row">
-          <div class="field"><label for="name">Full name</label><input id="name" name="name" required placeholder="Jane Doe"/></div>
-          <div class="field"><label for="role">Role</label>
-            <select id="role" name="role" required>
-              <option value="">Select…</option>
-              <option>Campaign Manager</option>
-              <option>Field Director</option>
-              <option>Consultant / Agency</option>
-              <option>Party Committee</option>
-              <option>Independent Expenditure</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" required placeholder="jane@campaign.com"/></div>
-          <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" placeholder="(215) 555-0101"/></div>
-        </div>
-        <div class="form-row">
-          <div class="field"><label for="race">Race / committee</label><input id="race" name="race" placeholder="PA-07 · U.S. House"/></div>
-          <div class="field"><label for="universe">Universe size</label>
-            <select id="universe" name="universe">
-              <option value="">Select…</option>
-              <option>Under 50k</option>
-              <option>50k – 250k</option>
-              <option>250k – 1M</option>
-              <option>Over 1M</option>
-            </select>
-          </div>
+          <div class="field"><label for="firstName">First name <span class="req">*</span></label><input id="firstName" name="firstName" required placeholder="Jane"/></div>
+          <div class="field"><label for="lastName">Last name <span class="req">*</span></label><input id="lastName" name="lastName" required placeholder="Doe"/></div>
         </div>
         <div class="form-row one">
-          <div class="field"><label for="when">Live by</label>
-            <select id="when" name="when">
-              <option value="">Select…</option>
-              <option>Within 30 days</option>
-              <option>This quarter</option>
-              <option>Pre-primary</option>
-              <option>General window</option>
-              <option>Exploring for '28</option>
+          <div class="field"><label for="email">Email address <span class="req">*</span></label><input id="email" name="email" type="email" required placeholder="jane@campaign.com"/></div>
+        </div>
+        <div class="form-row one">
+          <div class="field"><label for="additionalEmails">Additional attendee emails <span class="opt">(optional)</span></label><input id="additionalEmails" name="additionalEmails" placeholder="alex@campaign.com, taylor@campaign.com"/></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="countryCode">Country code <span class="req">*</span></label>
+            <select id="countryCode" name="countryCode" required>
+              <option value="+1" selected>🇺🇸 +1 (US / CA)</option>
+              <option value="+44">🇬🇧 +44 (UK)</option>
+              <option value="+61">🇦🇺 +61 (AU)</option>
+              <option value="+353">🇮🇪 +353 (IE)</option>
+              <option value="+49">🇩🇪 +49 (DE)</option>
+              <option value="+33">🇫🇷 +33 (FR)</option>
+              <option value="+34">🇪🇸 +34 (ES)</option>
+              <option value="+39">🇮🇹 +39 (IT)</option>
+              <option value="+55">🇧🇷 +55 (BR)</option>
+              <option value="+52">🇲🇽 +52 (MX)</option>
+              <option value="+91">🇮🇳 +91 (IN)</option>
+              <option value="+81">🇯🇵 +81 (JP)</option>
+              <option value="other">Other…</option>
             </select>
           </div>
+          <div class="field"><label for="phone">Phone number <span class="req">*</span></label><input id="phone" name="phone" type="tel" required placeholder="(215) 555-0101"/></div>
+        </div>
+        <div class="form-row one">
+          <div class="field"><label for="race">Race / committee <span class="opt">(optional)</span></label><input id="race" name="race" placeholder="PA-07 · U.S. House"/></div>
+        </div>
+        <div class="form-row one">
+          <fieldset class="field role-fs">
+            <legend>Role <span class="opt">(optional)</span></legend>
+            <div class="radio-grid">
+              <label class="radio"><input type="radio" name="role" value="Campaign Manager"/><span>Campaign Manager</span></label>
+              <label class="radio"><input type="radio" name="role" value="Field Director"/><span>Field Director</span></label>
+              <label class="radio"><input type="radio" name="role" value="Consultant / Agency"/><span>Consultant / Agency</span></label>
+              <label class="radio"><input type="radio" name="role" value="Party Committee"/><span>Party Committee</span></label>
+              <label class="radio"><input type="radio" name="role" value="Independent Expenditure"/><span>Independent Expenditure</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="form-row one">
+          <div class="field"><label for="notes">Please share anything that will help prepare for our meeting <span class="opt">(optional)</span></label><textarea id="notes" name="notes" rows="3" placeholder="Universe size, timing, anything we should know…"></textarea></div>
         </div>
         <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap">
           <button type="submit" class="btn btn-primary">Continue to scheduling <span class="arrow">→</span></button>
-          <a href="#platform" class="btn btn-ghost">Or hear a sample call</a>
         </div>
-        <div class="form-foot">You'll be taken to our scheduler to pick a time. We'll bring the details you've shared into the meeting.</div>
+        <div class="form-foot">You'll be taken to our scheduler to pick a time. The details you've shared come with you.</div>
       </form>
     </div>
   </div>
@@ -890,32 +920,50 @@ footer.foot{background:var(--bg);padding:56px 0 24px;border-top:1px solid var(--
     if(btn){ btn.disabled = true; btn.textContent = 'Redirecting…'; }
 
     const v = id => (document.getElementById(id)?.value || '').trim();
-    const name = v('name');
-    const email = v('email');
-    const phone = v('phone');
-    const role = v('role');
-    const race = v('race');
-    const universe = v('universe');
-    const when = v('when');
+    const role = (form.querySelector('input[name="role"]:checked') || {}).value || '';
 
-    const notes = [
-      role     && `Role: ${role}`,
-      race     && `Race / committee: ${race}`,
-      universe && `Universe size: ${universe}`,
-      when     && `Live by: ${when}`,
-    ].filter(Boolean).join(' · ');
+    const firstName = v('firstName');
+    const lastName  = v('lastName');
+    const fullName  = [firstName, lastName].filter(Boolean).join(' ');
+    const email     = v('email');
+    const addlEmail = v('additionalEmails');
+    const countryCode = v('countryCode');
+    const phoneRaw  = v('phone');
+    const phone     = phoneRaw
+      ? (countryCode && countryCode !== 'other' && !phoneRaw.startsWith('+')
+          ? `${countryCode} ${phoneRaw}`
+          : phoneRaw)
+      : '';
+    const race      = v('race');
+    const notesIn   = v('notes');
 
+    const notesParts = [
+      race && `Race / committee: ${race}`,
+      role && `Role: ${role}`,
+      addlEmail && `Additional attendees: ${addlEmail}`,
+      notesIn,
+    ].filter(Boolean);
+    const notes = notesParts.join('\n');
+
+    /* Zoom Scheduler reads a small set of prefill keys, but the exact names
+       vary across scheduler revisions and per-question custom IDs. We pass
+       each value under every reasonable alias; the scheduler picks up what
+       it recognizes and ignores the rest. */
     const params = new URLSearchParams();
-    if(name)  params.set('name',  name);
-    if(email) params.set('email', email);
-    if(phone) params.set('phone', phone);
-    if(notes){
-      // pass under several common keys so whichever the scheduler reads gets populated
-      params.set('notes', notes);
-      params.set('note', notes);
-      params.set('message', notes);
-      params.set('comments', notes);
+    const setMany = (keys, val) => { if(val) keys.forEach(k => params.set(k, val)); };
+
+    setMany(['name','fullName','full_name'], fullName);
+    setMany(['firstName','first_name','first','givenName','given_name'], firstName);
+    setMany(['lastName','last_name','last','familyName','family_name','surname'], lastName);
+    setMany(['email','emailAddress','email_address'], email);
+    setMany(['additionalEmails','additional_emails','additionalAttendeeEmails','cc','guestEmails','guest_emails'], addlEmail);
+    setMany(['phone','phoneNumber','phone_number','tel','mobile'], phone);
+    if(countryCode && countryCode !== 'other'){
+      setMany(['countryCode','country_code','phoneCountryCode','phone_country_code'], countryCode);
     }
+    setMany(['race','raceCommittee','race_committee','committee'], race);
+    setMany(['role','attendeeRole','attendee_role'], role);
+    setMany(['notes','note','message','comments','additionalNotes','additional_notes','question','reason'], notes);
 
     const url = SCHEDULER + (params.toString() ? '?' + params.toString() : '');
     window.location.assign(url);
